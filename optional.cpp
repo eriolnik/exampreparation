@@ -119,3 +119,50 @@ constexpr optional<T> make_optional(Args&&... args) {
     return optional<T>(std::in_place, std::forward<Args>(args)...);
 }
 // функция make_unigue на вход принимает r-value сколько-то аргументов args
+
+
+//2 способ
+
+#include <exception>
+#include <optional>
+
+using byte = char;
+
+template <typename T>
+class optional {
+public:
+    constexpr optional() noexcept : dummy{}, flag{false} {}
+    constexpr optional(std::nullopt_t) noexcept : optional() {}
+    constexpr optional( const optional& other ) = default;
+    constexpr optional( optional&& other ) noexcept = default;
+    optional<T>& operator=(const optional<T>&) = default;
+    optional<T>& operator=(optional<T>&&) noexcept = default;
+
+    T& operator*() {
+        return val;
+    }
+
+    T* operator->() {
+        return *val;
+    }
+    operator bool() const {
+        return flag;
+    }
+    T& value() {
+        if (flag) return val;
+        else throw std::bad_optional_access();
+    }
+
+    template <class U>
+    T value_or(U&& default_value) {
+        if (flag) return val;
+        else return static_cast<T>(std::forward<U>(default_value));
+    }
+
+private:
+    union {
+        byte dummy;
+        std::remove_const_t<T> val;
+    };
+    bool flag;
+};

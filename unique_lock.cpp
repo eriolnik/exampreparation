@@ -40,7 +40,9 @@ public:
         m = mut;
         own = false;
     }
-
+/*adopt_lock_t это грубо говоря флаг который указывает lock_guard`у,
+    что передаваемый mutex уже захвачен и не нужно вызывать вызыватьт метод lock,
+    в противном случае будет повторный захват mutex`а и неопределенное поведение*/
     unique_lock(Mutex &mut, std::adopt_lock_t) {
         m = mut;
         own = true;

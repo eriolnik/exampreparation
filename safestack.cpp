@@ -12,7 +12,7 @@ class SafeStack {
 
 private:
     std::stack<T> st;
-    std::mutex mut;
+    std::mutex mut; //обозначаем mutex
 
 public:
 
@@ -25,7 +25,7 @@ public:
         if (!st.empty()) {
             st.pop();
         }
-        //mut.unlock()
+        //mut.unlock(), тк lockguard сам заботится о лок и анлок
     }
 
     void Push(const T &value) {

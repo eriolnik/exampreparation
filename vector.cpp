@@ -11,8 +11,11 @@ private:
     size_t size;
     size_t capacity;
 public:
-    Vector() : size(0), capacity(16) {
+    Vector() : size(0), capacity(16) {  //по умолчанию
         data = new T[capacity];
+    }
+    ~Vector() { //деструктор
+        delete[] data;
     }
     Vector(const Vector& vec) : size(vec.size), capacity(vec.capacity) { //конструктор копирования
         if (size == 0) {
@@ -43,9 +46,6 @@ public:
         return *this;
     }
 
-    ~Vector() { //деструктор
-        delete[] data;
-    }
 
     Vector& operator=(const Vector& rhs) { //копирования
         if (this != &rhs) {
@@ -84,7 +84,7 @@ public:
             } else {
                 T* newData = new T[size * 2];
                 capacity = size * 2;
-                std::memcpy(newData, data, (size) * sizeof(T));
+                std::memcpy(newData, data, (size) * sizeof(T)); //Копирует байты между буферами.
                 delete[] data;
                 data = newData;
             }

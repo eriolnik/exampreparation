@@ -10,13 +10,9 @@ class SafeQueue {
 private:
     std::queue<T> q;
     std::mutex m;
-
 public:
-
     SafeQueue() = default;
-
     ~SafeQueue() = default;
-
     void Pop() { //удаление последнего
         std::lock_guard<std::mutex> locker(m); //потокобезопасная зона
         q.pop();
@@ -43,3 +39,16 @@ public:
         return q.size();
     }
 };
+
+/*T Pop() { // реализация удаления 2 способ
+    std::lock_guard<std::mutex> lock(_mutex);
+    if (!_queue.empty()) {
+        T deleteItem;
+        deleteItem = _queue.front();
+        _queue.pop();
+        return deleteItem;
+    } else {
+        throw std::out_of_range("queue is empty");
+    }
+}
+ */

@@ -4,6 +4,9 @@
 #include <cstring>
 
 class String {
+private:
+    char* Data;
+    size_t size;
 public:
     ~String() { //деструткор
         delete[] Data;
@@ -17,7 +20,7 @@ public:
     String(const String& rhs) { //конструктор копирования
         size = std::strlen(rhs.Data);
         Data = new char[size + 1];
-        std::memcpy(Data, rhs.Data, sizeof(char) * (size + 1));
+        std::memcpy(Data, rhs.Data, sizeof(char) * (size + 1)); //Копирует байты между буферами.
     }
 
     String(String&& rhs) { //конструктор перемещения
@@ -42,7 +45,7 @@ public:
     explicit String(const char* data) { //Конструктор от const char*
         size = std::strlen(data);
         Data = new char[size + 1];
-        std::memcpy(Data, data, sizeof(char) * (size + 1));
+        std::memcpy(Data, data, sizeof(char) * (size + 1)); //Копирует байты между буферами.
     }
 
     String& operator=(const String& rhs) { //копирования
@@ -65,7 +68,7 @@ public:
 
     String& append(const String& rhs) {
         char* ans = new char[size + rhs.size + 1];
-        std::memcpy(ans, Data, sizeof(char) * size);
+        std::memcpy(ans, Data, sizeof(char) * size); //Копирует байты между буферами.
         std::memcpy(ans + size, rhs.Data, sizeof(char) * (rhs.size + 1));
         delete[] Data;
         Data = ans;
@@ -85,7 +88,4 @@ public:
         return tmp;
     }
 
-private:
-    char* Data;
-    size_t size;
 };

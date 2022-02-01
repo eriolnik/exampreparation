@@ -11,7 +11,15 @@ public:
         T data;
         node *next;
     };
+    void pop(T& result) {
 
+        node* old_head = head.load();
+
+        while (!head.compare_exchange_weak(old_head, old_head->next));
+
+        result = old_head->data;
+
+    }
     void push(const T &value) {
         node *new_head = new node(value, head.load());
 
@@ -24,7 +32,7 @@ public:
 
     bool TryPop(T &value) {  //Возвращает значение, указывающее,
         // есть ли объект в верхней части стека<T><T>,
-        // если он присутствует, копирует его в resultпараметр и
+        // если он присутствует, копирует его в result параметр и
         // удаляет его из стека<T><T>.
         if (head.data != nullptr) {
             value = head.load();
